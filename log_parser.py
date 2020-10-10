@@ -102,8 +102,7 @@ opening_the_file_for_recording.write(" " + "-" * 61 + ""+ "\n")
 print(f'Записан файл {name_extension}')
 opening_the_file_for_recording.close()
 #проверка закрытия файла
-closed_file = opening_the_file_for_recording.closed
-if closed_file:
+if opening_the_file_for_recording.closed:
     print("Файл закрыт.")
 else:
     print("Вы забыли закрыть файл!")
