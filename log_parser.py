@@ -24,7 +24,15 @@ name:Дарья;gender:m;item:Айфон;item_cost:77900
 name:Марья;gender:m;item:Кофемашина;item_cost:23500
 name:Юлия;gender:m;item:Фитнес-браслет;item_cost:12300"""
 
-#Парсим строку в лист листов через .split(). Сначала по переносу строки ('\n'), затем по (';') 
+#подготавливаем данные для записи
+#вводим имя файла, расширение и открываем файл
+#файл открыт в режиме 'w' т.е. для для чтения и записи
+name_file = input("Введите имя файла, в который будем записывать данные таблицы: ")
+name_extension = name_file + ".txt"
+opening_the_file_for_recording = open(name_extension, "w")
+
+#Парсим строку в лист листов через .split(). 
+#Сначала по переносу строки ('\n'),затем по (';') 
 #используем ListComprehension
 list_string = [string.split(';') for string in [string for string in log.split('\n')]]
 
@@ -59,20 +67,45 @@ for key in dict_header.keys():
 		header_item_cost = "Цена"
 		
 #формируем красивый заголовок в рамке 
-#для вывода к консоль и для записи в файл
+#для вывода к консоль
 print(" " + "_" * 61 + "")
-print(f"| {header_name:10} | {header_gender:10} | {header_item:20} |  {header_item_cost:10}|")
+print(f"| {header_name:10} | {header_gender:10} |\
+ {header_item:20} |  {header_item_cost:10}|")
 print("|" + "-" * 61 + "|")
 
+#для записи в файл
+opening_the_file_for_recording.write(" " + "_" * 60 + "" + "\n")
+opening_the_file_for_recording.write("|  " + header_name + "     |  " + header_gender\
++ "     |  " + header_item + "            |  " + header_item_cost + "     |"+ "\n")
+opening_the_file_for_recording.write("|" + "_" * 60 + "|" + "\n")
+
 #создаем словарь из строки списка
-#формируем построчно таблицу. #заполняем ее значениями словаря.
+#формируем построчно таблицу. 
+#заполняем ее значениями словаря.
 values_table_rows = dict()
 for string in list_string:
 	for element in string:
 		dict_k_v = element.split(":")
 		values_table_rows[dict_k_v[0]] = dict_k_v[1]
-	print(" " + "_" * 61 + "")
-	print(f"| {values_table_rows['name']:10} | {values_table_rows['gender']:10} | {values_table_rows['item']:20} |  {values_table_rows['item_cost']:9} |")
+    #выводим в консоль
+	print(" " + "_" * 61 + "") 
+	print(f"| {values_table_rows['name']:10} | {values_table_rows['gender']:10} |\
+ {values_table_rows['item']:20} |  {values_table_rows['item_cost']:9} |")
 
+#записываем в файл    
+for string in list_string:
+	for element in string:
+		dict_k_v = element.split(":")
+		values_table_rows[dict_k_v[0]] = dict_k_v[1]
+	opening_the_file_for_recording.write(" " + "_" * 61 + ""+ "\n") 
+	opening_the_file_for_recording.write("|" + f"{values_table_rows['name']:10}" + "|" +\
+f"{values_table_rows['gender']:10}" + "|" + f"{values_table_rows['item']:26}" + "|" + \
+f"  {values_table_rows['item_cost']:9}" + "|"+ "\n")
+
+#выводим в консоль
 print("|" + "-" * 61 + "|")
-
+#записываем в файл
+opening_the_file_for_recording.write(" " + "-" * 61 + ""+ "\n")
+#закрываем записанный файл
+print(f'Записан файл {name_extension}')
+opening_the_file_for_recording.close()
