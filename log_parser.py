@@ -42,12 +42,9 @@ list_string = [string.split(';') for string in [string for string in log.split('
 #ключам которого сформируем
 #заголовки таблицы, в которую будем
 #распарсивать в дальнейшем данные
-
-dict_header = dict()
+#используем DictComprehension
 string = list_string[0]
-for element in string:
-	dict_key_value = element.split(':')
-	dict_header[dict_key_value[0]] = dict_key_value[1]
+dict_header = {element.split(':')[0]:element.split(':')[1] for element in string}
 	
 #создаем переменные для заголовков таблицы
 header_name = ""
@@ -75,8 +72,8 @@ print("|" + "-" * 61 + "|")
 
 #для записи в файл
 opening_the_file_for_recording.write(" " + "_" * 60 + "" + "\n")
-opening_the_file_for_recording.write("|  " + header_name + "     |  " + header_gender\
-+ "     |  " + header_item + "            |  " + header_item_cost + "     |"+ "\n")
+opening_the_file_for_recording.write("|" + f"{header_name:10}" + "|" + f"{header_gender:10}"\
++ "|" + f"{header_item:26}" + "|" + f"{header_item_cost:11}" + "|"+ "\n")
 opening_the_file_for_recording.write("|" + "_" * 60 + "|" + "\n")
 
 #создаем словарь из строки списка
@@ -91,12 +88,7 @@ for string in list_string:
 	print(" " + "_" * 61 + "") 
 	print(f"| {values_table_rows['name']:10} | {values_table_rows['gender']:10} |\
  {values_table_rows['item']:20} |  {values_table_rows['item_cost']:9} |")
-
-#записываем в файл    
-for string in list_string:
-	for element in string:
-		dict_k_v = element.split(":")
-		values_table_rows[dict_k_v[0]] = dict_k_v[1]
+    #записываем в файл
 	opening_the_file_for_recording.write(" " + "_" * 61 + ""+ "\n") 
 	opening_the_file_for_recording.write("|" + f"{values_table_rows['name']:10}" + "|" +\
 f"{values_table_rows['gender']:10}" + "|" + f"{values_table_rows['item']:26}" + "|" + \
@@ -109,3 +101,9 @@ opening_the_file_for_recording.write(" " + "-" * 61 + ""+ "\n")
 #закрываем записанный файл
 print(f'Записан файл {name_extension}')
 opening_the_file_for_recording.close()
+#проверка закрытия файла
+closed_file = opening_the_file_for_recording.closed
+if closed_file:
+    print("Файл закрыт.")
+else:
+    print("Вы забыли закрыть файл!")
